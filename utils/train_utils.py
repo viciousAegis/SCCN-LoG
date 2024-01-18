@@ -109,14 +109,15 @@ def model_train(args, model, adj, feat, labels, idx_train, idx_val, idx_train_p=
         optimizer.zero_grad()     
         output = model(feat,adj)
 
-        loss_train = F.nll_loss(output[idx_train], labels[idx_train])
+        # loss is l2 norm of the output
+        loss_train = F.l1_loss(output[idx_train], labels[idx_train])
         acc_train = accuracy(output[idx_train], labels[idx_train])
             
         loss_train.backward()
         optimizer.step()
 
         model.eval()
-        loss_val = F.nll_loss(output[idx_val], labels[idx_val])
+        loss_val = F.l1_loss(output[idx_val], labels[idx_val])
         acc_val = accuracy(output[idx_val], labels[idx_val])
 
         if args.earlystp and (ep+1)>args.earlystp_ep_since:

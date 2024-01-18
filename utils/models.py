@@ -18,7 +18,7 @@ class GCN(nn.Module):
         x = F.dropout(x, self.dropout, training=self.training)
         x = self.gc2(x, adj)
         # return x
-        return F.log_softmax(x, dim=1)
+        return F.relu(x)
 
 
 
@@ -34,4 +34,4 @@ class MLP(nn.Module):
         x = F.dropout(x, self.dropout, training=self.training)
         x = self.lay2(x)
         # return x
-        return F.log_softmax(x, dim=1)
+        return F.relu(x)

@@ -35,16 +35,17 @@ def main():
             if adj[p].shape[0] < 10:
                 print('total sample size is less than 10, skip training')
             else:
-
+                # reshape features to have 2nd dimension of 15
+                print(feat[p][0],args.hiddim,labels[p].max().item(),args.dropout)
                 model = GCN(nfeat=feat[p].shape[1],
                             nhid = args.hiddim,
-                            nout = labels[p].max().item() + 1,
+                            nout = 1,
                             dropout = args.dropout)
                             
-                ###
                 model = model.double()
-                feat[p] = feat[p].double()
+                print(feat[p].dtype,adj[p].dtype)
                 adj[p] = adj[p].double()
+                feat[p] = feat[p].double()
 
                 if torch.any(idx_train[p]) and torch.any(idx_val[p]):
                     loss_train_all, loss_val_all, acc_train_all, acc_val_all, model, output\
@@ -79,8 +80,7 @@ def main():
         else:
             model = GCN(nfeat=feat.shape[1],
                             nhid = args.hiddim,
-                            nout = labels.max().item() + 1,
-                            dropout = args.dropout)
+                            nout = 1,                          dropout = args.dropout)
                             
             ###
             model = model.double()
